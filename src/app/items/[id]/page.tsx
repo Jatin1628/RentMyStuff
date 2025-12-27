@@ -57,19 +57,22 @@ export default function ItemDetailPage() {
     return (
       <main className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 animate-pulse">
-              <div className="aspect-video rounded-xl bg-gray-200" />
-              <div className="mt-4 flex gap-2">
+          <div className="mb-8">
+            <div className="h-4 bg-gray-200 rounded w-32 animate-shimmer" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="lg:col-span-2">
+              <div className="aspect-video rounded-2xl bg-gray-200 animate-shimmer" />
+              <div className="mt-6 flex gap-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-20 w-24 rounded-lg bg-gray-200" />
+                  <div key={i} className="h-24 w-28 rounded-xl bg-gray-200 animate-shimmer" />
                 ))}
               </div>
             </div>
-            <div className="animate-pulse space-y-4">
-              <div className="h-8 bg-gray-200 rounded w-3/4" />
-              <div className="h-6 bg-gray-200 rounded w-1/2" />
-              <div className="h-32 bg-gray-200 rounded" />
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded-lg w-3/4 animate-shimmer" />
+              <div className="h-6 bg-gray-200 rounded-lg w-1/2 animate-shimmer" />
+              <div className="h-32 bg-gray-200 rounded-lg animate-shimmer" />
             </div>
           </div>
         </div>
@@ -79,63 +82,65 @@ export default function ItemDetailPage() {
 
   if (error || !item) {
     return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center space-y-4">
-            <div className="text-6xl">❌</div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {error ?? "Item not found"}
-            </h1>
-            <p className="text-gray-600">
-              The item you're looking for doesn't exist or has been removed.
-            </p>
-            <Link
-              href="/items"
-              className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
-            >
-              Back to Marketplace
-            </Link>
-          </div>
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <div className="max-w-md text-center space-y-6 animate-fade-in-up">
+          <div className="text-6xl">❌</div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {error ?? "Item not found"}
+          </h1>
+          <p className="text-gray-600 leading-relaxed">
+            The item you're looking for doesn't exist or has been removed.
+          </p>
+          <Link
+            href="/items"
+            className="inline-block px-8 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1"
+          >
+            Back to Marketplace
+          </Link>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Breadcrumb */}
-        <div className="mb-8">
-          <Link href="/items" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-            ← Back to Marketplace
+        <div className="mb-10 animate-fade-in-left">
+          <Link href="/items" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-all duration-200 inline-flex items-center gap-2">
+            <span>←</span>
+            <span>Back to Marketplace</span>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* Left Column - Images */}
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 animate-fade-in-up">
+          {/* Left Column - Premium Gallery */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Main Image */}
-            <div className="relative aspect-video overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
+            <div className="relative aspect-video overflow-hidden rounded-3xl border border-gray-200/50 bg-gray-900 shadow-xl group">
               {item.imageUrls?.[activeIndex] ? (
                 <Image
                   src={item.imageUrls[activeIndex]}
                   alt={item.title}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 66vw"
                   priority
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900" />
               )}
 
+              {/* Image Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
               {/* Availability Badge */}
-              <div className="absolute top-4 left-4 z-10">
+              <div className="absolute top-6 left-6 z-10">
                 <span
-                  className={`inline-block px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                  className={`inline-block px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm transition-all ${
                     item.isAvailable
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600"
+                      ? "bg-emerald-500/90 text-white shadow-lg"
+                      : "bg-gray-600/80 text-gray-200"
                   }`}
                 >
                   {item.isAvailable ? "✓ Available Now" : "Unavailable"}
@@ -145,15 +150,15 @@ export default function ItemDetailPage() {
 
             {/* Thumbnail Gallery */}
             {item.imageUrls && item.imageUrls.length > 1 && (
-              <div className="mt-6 flex gap-3 overflow-x-auto pb-2">
+              <div className="flex gap-3 overflow-x-auto pb-3">
                 {item.imageUrls.map((url, i) => (
                   <button
                     key={url + i}
                     onClick={() => setActiveIndex(i)}
-                    className={`flex-shrink-0 h-20 w-24 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`flex-shrink-0 h-24 w-32 rounded-2xl overflow-hidden border-2 transition-all duration-200 hover:scale-105 ${
                       i === activeIndex
-                        ? "border-gray-900 ring-2 ring-gray-900"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-gray-900 ring-2 ring-gray-900 shadow-md"
+                        : "border-gray-200 hover:border-gray-400"
                     }`}
                   >
                     <Image
@@ -161,77 +166,82 @@ export default function ItemDetailPage() {
                       alt={`${item.title}-${i}`}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 100px, 120px"
+                      sizes="(max-width: 640px) 100px, 140px"
                     />
                   </button>
                 ))}
               </div>
             )}
+
+            {/* Description Card */}
+            <div className="p-8 rounded-2xl border border-gray-200/50 bg-white/80 backdrop-blur-sm">
+              <h2 className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
+                About This Item
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {item.description}
+              </p>
+            </div>
           </div>
 
-          {/* Right Column - Details & CTA */}
+          {/* Right Column - Premium CTA */}
           <div className="space-y-6">
             {/* Title & Category */}
-            <div className="space-y-3">
-              <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded-md">
+            <div className="space-y-4">
+              <span className="inline-block px-3 py-1.5 bg-gray-900/10 text-gray-700 text-xs font-bold rounded-lg backdrop-blur-sm">
                 {item.category}
               </span>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-4xl font-bold text-gray-900 leading-tight">
                 {item.title}
               </h1>
             </div>
 
-            {/* Description */}
-            <p className="text-gray-600 leading-relaxed">
-              {item.description}
-            </p>
-
-            {/* Owner Section */}
-            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50">
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">
-                Owner
+            {/* Owner Trust Card */}
+            <div className="p-6 rounded-2xl border border-gray-200/50 bg-gradient-to-br from-white/80 to-gray-50/80 backdrop-blur-sm space-y-4">
+              <p className="text-xs font-bold text-gray-600 uppercase tracking-wide">
+                Renting From
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div className="flex-shrink-0">
                   {item.ownerPhoto ? (
                     <Image
                       src={item.ownerPhoto}
                       alt={item.ownerName}
-                      width={48}
-                      height={48}
-                      className="rounded-full object-cover"
+                      width={56}
+                      height={56}
+                      className="rounded-full object-cover ring-2 ring-white shadow-md"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-300 to-gray-400" />
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 ring-2 ring-white" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900">{item.ownerName}</p>
-                  <p className="text-sm text-gray-600">Trusted Lender</p>
+                  <p className="font-bold text-gray-900">{item.ownerName}</p>
+                  <p className="text-sm text-gray-600">✓ Verified Lender</p>
                 </div>
               </div>
             </div>
 
-            {/* Pricing Box */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 space-y-4 shadow-sm">
+            {/* Premium Pricing Box */}
+            <div className="rounded-2xl border border-gray-200/50 bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-sm p-8 space-y-6 shadow-lg">
               {/* Price Per Day */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">Price per day</p>
-                <p className="text-4xl font-bold text-gray-900">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-gray-600">Price per day</p>
+                <p className="text-5xl font-bold text-gray-900">
                   ₹{item.pricePerDay}
                 </p>
               </div>
 
-              {/* Duration Input */}
-              <div className="space-y-3 pt-4 border-t border-gray-200">
-                <label htmlFor="days" className="block text-sm font-medium text-gray-900">
-                  How many days?
+              {/* Duration Input - Premium */}
+              <div className="space-y-4 pt-6 border-t border-gray-200">
+                <label htmlFor="days" className="block text-sm font-bold text-gray-900">
+                  Rental Duration
                 </label>
-                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white hover:border-gray-400 transition-colors">
                   <button
                     type="button"
                     onClick={() => setDays(Math.max(1, days - 1))}
-                    className="flex-shrink-0 w-12 h-12 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
+                    className="flex-shrink-0 w-14 h-14 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors font-bold text-xl"
                   >
                     −
                   </button>
@@ -241,45 +251,48 @@ export default function ItemDetailPage() {
                     min={1}
                     value={days}
                     onChange={(e) => setDays(Math.max(1, Number(e.target.value) || 1))}
-                    className="flex-1 px-4 py-3 text-center text-lg font-semibold text-gray-900 border-0 focus:ring-0"
+                    className="flex-1 px-4 py-4 text-center text-2xl font-bold text-gray-900 border-0 focus:ring-0"
                   />
                   <button
                     type="button"
                     onClick={() => setDays(days + 1)}
-                    className="flex-shrink-0 w-12 h-12 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
+                    className="flex-shrink-0 w-14 h-14 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors font-bold text-xl"
                   >
                     +
                   </button>
                 </div>
+                <p className="text-xs text-gray-500">
+                  {days} day{days !== 1 ? "s" : ""} total
+                </p>
               </div>
 
-              {/* Total */}
-              <div className="space-y-1 pt-2 border-t border-gray-200">
-                <div className="flex items-center justify-between mb-2">
+              {/* Pricing Breakdown */}
+              <div className="space-y-2 pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
                   <span className="font-semibold text-gray-900">₹{(item.pricePerDay * days).toLocaleString()}</span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Service fee</span>
                   <span className="font-semibold text-gray-900">₹0</span>
                 </div>
               </div>
 
               {/* Grand Total */}
-              <div className="space-y-1 pt-3 border-t-2 border-gray-300">
+              <div className="space-y-2 pt-3 border-t-2 border-gray-300">
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-semibold text-gray-900">Total</span>
-                  <span className="text-2xl font-bold text-gray-900">₹{total.toLocaleString()}</span>
+                  <span className="text-lg font-bold text-gray-900">Total Amount</span>
+                  <span className="text-4xl font-bold text-gray-900">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 
-              {/* Rent Button */}
+              {/* Rent Button - Premium CTA */}
               <button
                 disabled={!item.isAvailable}
-                className={`w-full py-4 font-semibold rounded-lg transition-all transform active:scale-98 text-lg ${
+                className={`w-full py-4 font-bold rounded-xl transition-all transform active:scale-95 text-lg shadow-lg hover:shadow-xl ${
                   item.isAvailable
                     ? "bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-700"
-                    : "bg-gray-200 text-gray-600 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
                 onClick={() => router.push(`/checkout?itemId=${item.id}&days=${days}`)}
               >
@@ -287,7 +300,7 @@ export default function ItemDetailPage() {
               </button>
 
               {/* Info Text */}
-              <p className="text-xs text-gray-600 text-center pt-2">
+              <p className="text-xs text-gray-600 text-center">
                 You'll pay the full amount upfront. No hidden charges.
               </p>
             </div>
