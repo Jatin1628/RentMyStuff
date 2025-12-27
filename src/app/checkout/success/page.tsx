@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/AuthContext";
+import Link from "next/link";
 
 export default function CheckoutSuccessPage() {
   const params = useSearchParams();
@@ -53,22 +54,62 @@ export default function CheckoutSuccessPage() {
   }, [params, user]);
 
   return (
-    <main className="p-6 max-w-xl mx-auto text-center">
-      <h1 className="text-2xl font-bold mb-2">Payment Success</h1>
-      {status === "loading" && <p>Verifying payment...</p>}
-      {status === "saved" && (
-        <>
-          <p className="mb-4">{message}</p>
-          <button
-            className="mt-4 bg-black text-white px-4 py-2 rounded"
-            onClick={() => router.push("/dashboard")}
-          >
-            Go to Dashboard
-          </button>
-        </>
-      )}
-      {status === "error" && <p className="text-red-600">{message}</p>}
+    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="max-w-md w-full text-center space-y-6">
+        {status === "loading" && (
+          <>
+            <div className="animate-spin w-12 h-12 border-4 border-gray-200 border-t-gray-900 rounded-full mx-auto" />
+            <h1 className="text-2xl font-bold text-gray-900">Verifying Payment</h1>
+            <p className="text-gray-600">Please wait while we process your order...</p>
+          </>
+        )}
+
+        {status === "saved" && (
+          <>
+            <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
+              <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900">Payment Successful!</h1>
+            <p className="text-gray-600">
+              Your rental order has been confirmed. You'll receive a confirmation email shortly.
+            </p>
+            <div className="pt-4 space-y-3">
+              <button
+                className="w-full px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                onClick={() => router.push("/rentals")}
+              >
+                View My Rentals
+              </button>
+              <Link
+                href="/items"
+                className="block px-6 py-3 border border-gray-300 text-gray-900 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          </>
+        )}
+
+        {status === "error" && (
+          <>
+            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto">
+              <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900">Payment Failed</h1>
+            <p className="text-gray-600">{message}</p>
+            <Link
+              href="/items"
+              className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Back to Marketplace
+            </Link>
+          </>
+        )}
+      </div>
     </main>
   );
 }
-
