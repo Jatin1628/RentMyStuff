@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ItemCard, { Item } from "@/components/ItemCard";
+import Link from "next/link";
 
 export default function MyPage() {
   const { user, loading } = useAuth();
@@ -108,18 +109,26 @@ export default function MyPage() {
 
   if (loading || busy) {
     return (
-      <main className="p-6">
-        <h1 className="text-2xl font-bold mb-4">My Stuff</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-xl border p-3">
-              <div className="animate-pulse">
-                <div className="aspect-[4/3] rounded-lg bg-gray-200" />
-                <div className="mt-3 h-4 w-3/4 bg-gray-200 rounded" />
-                <div className="mt-2 h-4 w-1/3 bg-gray-200 rounded" />
+      <main className="min-h-screen bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="space-y-12">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i}>
+                <div className="h-8 bg-gray-200 rounded w-1/4 mb-6 animate-pulse" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {Array.from({ length: 4 }).map((_, j) => (
+                    <div key={j} className="rounded-xl border border-gray-200 overflow-hidden animate-pulse">
+                      <div className="aspect-video bg-gray-200" />
+                      <div className="p-4 space-y-3">
+                        <div className="h-3 bg-gray-200 rounded w-2/3" />
+                        <div className="h-4 bg-gray-200 rounded w-full" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </main>
     );
@@ -128,56 +137,113 @@ export default function MyPage() {
   if (!user) return null;
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Stuff</h1>
-
-      <section className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-semibold">Rented by me</h2>
-          <span className="text-sm text-gray-600">{myRentals.length} items</span>
-        </div>
-        {myRentals.length === 0 ? (
-          <p className="text-gray-600">You haven’t rented any items yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {myRentals.map((item) => (
-              <ItemCard key={item.id} item={item} />
-            ))}
+    <main className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {error && (
+          <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+            {error}
           </div>
         )}
-      </section>
 
-      <section className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-semibold">Uploaded by me</h2>
-          <span className="text-sm text-gray-600">{myUploads.length} items</span>
-        </div>
-        {myUploads.length === 0 ? (
-          <p className="text-gray-600">No uploads yet. Create your first listing.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {myUploads.map((item) => (
-              <ItemCard key={item.id} item={item} />
-            ))}
+        {/* My Rentals Section */}
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Items I'm Renting</h2>
+              <p className="text-gray-600 mt-1">
+                {myRentals.length} {myRentals.length === 1 ? "item" : "items"}
+              </p>
+            </div>
+            <Link
+              href="/rentals"
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              View All →
+            </Link>
           </div>
-        )}
-      </section>
+          {myRentals.length === 0 ? (
+            <div className="text-center py-12 rounded-xl border border-gray-200 bg-gray-50">
+              <p className="text-gray-600">You haven't rented any items yet.</p>
+              <Link
+                href="/items"
+                className="inline-block mt-4 px-6 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Browse Marketplace
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {myRentals.map((item) => (
+                <ItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </section>
 
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-semibold">All items</h2>
-          <span className="text-sm text-gray-600">{allItems.length} items</span>
-        </div>
-        {allItems.length === 0 ? (
-          <p className="text-gray-600">No items available yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {allItems.map((item) => (
-              <ItemCard key={item.id} item={item} />
-            ))}
+        {/* My Uploads Section */}
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Items I'm Listing</h2>
+              <p className="text-gray-600 mt-1">
+                {myUploads.length} {myUploads.length === 1 ? "item" : "items"}
+              </p>
+            </div>
+            <Link
+              href="/uploads"
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              View All →
+            </Link>
           </div>
-        )}
-      </section>
+          {myUploads.length === 0 ? (
+            <div className="text-center py-12 rounded-xl border border-gray-200 bg-gray-50">
+              <p className="text-gray-600">No uploads yet. Create your first listing.</p>
+              <Link
+                href="/dashboard/add-item"
+                className="inline-block mt-4 px-6 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Create Listing
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {myUploads.map((item) => (
+                <ItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* All Items Section */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">All Available Items</h2>
+              <p className="text-gray-600 mt-1">
+                {allItems.length} {allItems.length === 1 ? "item" : "items"}
+              </p>
+            </div>
+            <Link
+              href="/items"
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              View All →
+            </Link>
+          </div>
+          {allItems.length === 0 ? (
+            <div className="text-center py-12 rounded-xl border border-gray-200 bg-gray-50">
+              <p className="text-gray-600">No items available yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allItems.map((item) => (
+                <ItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </main>
   );
 }
