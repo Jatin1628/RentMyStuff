@@ -5,10 +5,12 @@ import { auth } from "@/lib/firebase";
 import { logout } from "@/lib/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
+import { useCart } from "@/lib/CartContext";
 
 export default function Navbar() {
   const [user] = useAuthState(auth);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { items: cartItems } = useCart();
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
@@ -57,6 +59,19 @@ export default function Navbar() {
               </Link>
             ) : (
               <div className="relative">
+                {/* Cart Icon */}
+                <Link href="/cart" className="hidden sm:inline-flex items-center mr-3">
+                  <div className="relative">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-gray-700">
+                      <path d="M6 6h15l-1.5 9h-12z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="9" cy="20" r="1" />
+                      <circle cx="18" cy="20" r="1" />
+                    </svg>
+                    {cartItems.length > 0 && (
+                      <span className="absolute -right-2 -top-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">{cartItems.length}</span>
+                    )}
+                  </div>
+                </Link>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center justify-center h-10 w-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md"

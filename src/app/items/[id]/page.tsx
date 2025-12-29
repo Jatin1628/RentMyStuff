@@ -7,6 +7,9 @@ import { db } from "@/lib/firebase";
 import Image from "next/image";
 import Link from "next/link";
 import type { Item } from "@/components/ItemCard";
+import { useAuth } from "@/lib/AuthContext";
+import { useCart } from "@/lib/CartContext";
+import { useToast } from "@/lib/ToastContext";
 
 export default function ItemDetailPage() {
   const params = useParams<{ id: string }>();
@@ -16,6 +19,9 @@ export default function ItemDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [days, setDays] = useState(1);
+  const { user } = useAuth();
+  const { addItem } = useCart();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const load = async () => {
@@ -288,7 +294,7 @@ export default function ItemDetailPage() {
 
               {/* Rent Button - Premium CTA */}
               <button
-                disabled={!item.isAvailable}
+                disabled={!item.isAvailable || (user && item.ownerId === user.uid)}
                 className={`w-full py-4 font-bold rounded-xl transition-all transform active:scale-95 text-lg shadow-lg hover:shadow-xl ${
                   item.isAvailable
                     ? "bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-700"
@@ -296,7 +302,23 @@ export default function ItemDetailPage() {
                 }`}
                 onClick={() => router.push(`/checkout?itemId=${item.id}&days=${days}`)}
               >
-                {item.isAvailable ? "Proceed to Checkout" : "Not Available"}
+                {!item.isAvailable ? "Not Available" : (user && item.ownerId === user.uid) ? "You can't rent your own listing" : "Proceed to Checkout"}
+              </button>
+
+              {/* Add to Cart button */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (user && item.ownerId === user.uid) {
+                    showToast("You cannot add your own listing to the cart", "error");
+                    return;
+                  }
+                  addItem(item, days);
+                  showToast("Added to cart", "success");
+                }}
+                className="w-full mt-3 py-3 font-semibold rounded-xl border border-gray-200 bg-white hover:bg-gray-50"
+              >
+                Add to Cart
               </button>
 
               {/* Info Text */}

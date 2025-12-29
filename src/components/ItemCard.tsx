@@ -3,6 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef } from "react";
+import { useAuth } from "@/lib/AuthContext";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/lib/ToastContext";
 
 export type Item = {
   id: string;
@@ -24,6 +29,10 @@ export default function ItemCard({ item }: { item: Item }) {
   const [glowOpacity, setGlowOpacity] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
   const hasMultiple = item.imageUrls && item.imageUrls.length > 1;
+  const { user } = useAuth();
+  const router = useRouter();
+  const { showToast } = useToast();
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const next = () => {
     if (!hasMultiple) return;
@@ -123,6 +132,54 @@ export default function ItemCard({ item }: { item: Item }) {
                 </span>
               )}
             </div>
+
+              {/* Owner Delete Button - only visible to owner */}
+              {user && user.uid === item.ownerId && (
+                <div className="absolute top-3 right-3 z-30">
+                  {!confirmDelete ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setConfirmDelete(true);
+                      }}
+                      className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white/90 text-red-600 hover:bg-red-50 shadow-sm"
+                      title="Delete listing"
+                    >
+                      🗑
+                    </button>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 bg-white/95 p-2 rounded-lg shadow-sm">
+                      <button
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          try {
+                            await deleteDoc(doc(db, "items", item.id));
+                            showToast("Listing deleted", "success");
+                            router.refresh();
+                          } catch (err) {
+                            console.error(err);
+                            showToast("Failed to delete listing", "error");
+                          } finally {
+                            setConfirmDelete(false);
+                          }
+                        }}
+                        className="px-2 py-1 text-xs font-bold rounded bg-red-600 text-white"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setConfirmDelete(false);
+                        }}
+                        className="px-2 py-1 text-xs font-medium rounded bg-gray-100"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
             {/* Image Navigation Arrows - Premium */}
             {hasMultiple && (

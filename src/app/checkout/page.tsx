@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
+import { useToast } from "@/lib/ToastContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Image from "next/image";
@@ -54,10 +55,16 @@ export default function CheckoutPage() {
     }
   }, [loading, user, router]);
 
+  const { showToast } = useToast();
+
   const total = item ? item.pricePerDay * days : 0;
 
   const startCheckout = async () => {
     if (!user || !item) return;
+    if (user.uid === item.ownerId) {
+      showToast("You cannot checkout your own listing", "error");
+      return;
+    }
     try {
       setBusy(true);
       const res = await fetch("/api/checkout", {

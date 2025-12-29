@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
-import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ItemCard, { Item } from "@/components/ItemCard";
 import Link from "next/link";
+import { useToast } from "@/lib/ToastContext";
 
 export default function UploadsPage() {
   const { user, loading } = useAuth();
@@ -15,6 +16,8 @@ export default function UploadsPage() {
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const load = async () => {
@@ -62,9 +65,24 @@ export default function UploadsPage() {
         )
       );
     } catch {
-      alert("Failed to update item availability");
+      showToast("Failed to update item availability", "error");
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const deleteListing = async (id: string) => {
+    try {
+      setUpdatingId(id);
+      await deleteDoc(doc(db, "items", id));
+      setItems((prev) => prev.filter((it) => it.id !== id));
+      showToast("Listing deleted", "success");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to delete listing", "error");
+    } finally {
+      setUpdatingId(null);
+      setConfirmDeleteId(null);
     }
   };
 
@@ -213,6 +231,31 @@ export default function UploadsPage() {
                         >
                           {item.isAvailable ? "Deactivate" : "Activate"}
                         </button>
+                          {confirmDeleteId === item.id ? (
+                            <div className="flex-1 flex gap-2">
+                              <button
+                                onClick={() => deleteListing(item.id)}
+                                disabled={updatingId === item.id}
+                                className="flex-1 px-3 py-2.5 text-sm font-bold rounded-lg bg-red-600 text-white transition-all duration-200"
+                              >
+                                Confirm Delete
+                              </button>
+                              <button
+                                onClick={() => setConfirmDeleteId(null)}
+                                className="flex-1 px-3 py-2.5 text-sm font-medium rounded-lg bg-gray-100"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setConfirmDeleteId(item.id)}
+                              disabled={updatingId === item.id}
+                              className="flex-1 px-3 py-2.5 text-sm font-bold rounded-lg bg-white border border-red-200 text-red-700 hover:bg-red-50 transition-all duration-200"
+                            >
+                              Delete
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
