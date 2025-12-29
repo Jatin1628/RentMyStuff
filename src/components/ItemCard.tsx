@@ -20,7 +20,8 @@ export type Item = {
 
 export default function ItemCard({ item }: { item: Item }) {
   const [index, setIndex] = useState(0);
-  const [transform, setTransform] = useState("rotateX(0deg) rotateY(0deg)");
+  const [transform, setTransform] = useState("rotateX(0deg) rotateY(0deg) translateZ(0px)");
+  const [glowOpacity, setGlowOpacity] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
   const hasMultiple = item.imageUrls && item.imageUrls.length > 1;
 
@@ -44,14 +45,17 @@ export default function ItemCard({ item }: { item: Item }) {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
+    // More aggressive parallax: ±8 degrees instead of ±6
+    const rotateX = Math.max(-8, Math.min(8, (y - centerY) / 12));
+    const rotateY = Math.max(-8, Math.min(8, (centerX - x) / 12));
 
-    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
+    setTransform(`perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(24px)`);
+    setGlowOpacity(0.6);
   };
 
   const handleMouseLeave = () => {
-    setTransform("perspective(1000px) rotateX(0deg) rotateY(0deg)");
+    setTransform("perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px)");
+    setGlowOpacity(0);
   };
 
   return (
@@ -60,13 +64,22 @@ export default function ItemCard({ item }: { item: Item }) {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="group h-full cursor-pointer"
+        className="group h-full cursor-pointer relative"
       >
+        {/* Glow background - appears on hover */}
         <div
-          className="h-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 will-change-transform"
+          className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/10 blur-2xl pointer-events-none transition-opacity duration-300"
+          style={{ opacity: glowOpacity }}
+        />
+
+        <div
+          className="relative h-full rounded-2xl border border-white/30 bg-white/8 backdrop-blur-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 will-change-transform"
           style={{
             transform: transform,
             transformStyle: "preserve-3d",
+            boxShadow: glowOpacity > 0
+              ? `0 0 40px rgba(59, 130, 246, ${0.3 * glowOpacity}), 0 20px 40px rgba(0, 0, 0, 0.2 + 0.1 * glowOpacity)`
+              : undefined,
           }}
         >
           {/* Image Container */}
