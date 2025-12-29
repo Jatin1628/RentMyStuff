@@ -139,30 +139,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative overflow-hidden py-24 sm:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-        {/* Background decoration */}
+      {/* CTA Section - Premium */}
+      <section className="relative overflow-hidden py-24 sm:py-32 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
+        {/* Premium background with glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl opacity-80 animate-float" />
+          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-tr from-purple-500/15 to-transparent rounded-full blur-3xl opacity-70" />
+          <div className="absolute top-0 left-1/2 w-96 h-96 bg-gradient-to-b from-gray-700/40 to-transparent rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-10 animate-fade-in-up">
-          <h2 className="text-5xl sm:text-6xl font-bold leading-tight">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
             Your stuff.
             <br />
-            Your income.
+            <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">Your income.</span>
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
             Join thousands of people earning money by renting out items they already own.
           </p>
-          <Link
-            href="/items"
-            className="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-2xl"
-          >
-            Explore the Marketplace
-            <span className="ml-2">→</span>
-          </Link>
+          <div className="relative group inline-block pt-4">
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Link
+              href="/items"
+              className="relative inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-2 active:scale-95 shadow-xl hover:shadow-2xl"
+            >
+              Explore the Marketplace
+              <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
         </div>
       </section>
     </main>
