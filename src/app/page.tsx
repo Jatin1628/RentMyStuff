@@ -87,44 +87,53 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-animation">
-            {/* Feature Card 1 */}
-            <div className="group p-8 sm:p-10 rounded-2xl border border-gray-200 bg-white/50 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">📸</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature Card 1 - with glow */}
+            <div className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-blue-100/30 to-blue-50/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative p-8 sm:p-10 rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-2xl transition-all duration-400 transform hover:-translate-y-2 card-hover">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-120 transition-transform duration-400">
+                  <span className="text-3xl">📸</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Easy Listing
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  List your items in minutes with photos and pricing. Get discovered by thousands.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Easy Listing
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                List your items in minutes with photos and pricing. Get discovered by thousands.
-              </p>
             </div>
 
-            {/* Feature Card 2 */}
-            <div className="group p-8 sm:p-10 rounded-2xl border border-gray-200 bg-white/50 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">💳</span>
+            {/* Feature Card 2 - with glow */}
+            <div className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-emerald-100/30 to-emerald-50/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative p-8 sm:p-10 rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-2xl transition-all duration-400 transform hover:-translate-y-2 card-hover">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-120 transition-transform duration-400">
+                  <span className="text-3xl">💳</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Secure Payments
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Built-in Stripe checkout. Money lands in your account after each rental.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Secure Payments
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Built-in Stripe checkout. Money lands in your account after each rental.
-              </p>
             </div>
 
-            {/* Feature Card 3 */}
-            <div className="group p-8 sm:p-10 rounded-2xl border border-gray-200 bg-white/50 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">🤝</span>
+            {/* Feature Card 3 - with glow */}
+            <div className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-purple-100/30 to-purple-50/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative p-8 sm:p-10 rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm hover:bg-white hover:border-gray-300 hover:shadow-2xl transition-all duration-400 transform hover:-translate-y-2 card-hover">
+                <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-120 transition-transform duration-400">
+                  <span className="text-3xl">🤝</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Community Trust
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Verified users. Ratings and reviews. Build your reputation.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Community Trust
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Verified users. Ratings and reviews. Build your reputation.
-              </p>
             </div>
           </div>
         </div>
