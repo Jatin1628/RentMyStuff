@@ -135,59 +135,72 @@ export default function RentalsPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">My Rentals</h1>
-          <p className="mt-2 text-gray-600">
+        {/* Header - Premium */}
+        <div className="mb-12 space-y-2">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">My Rentals</h1>
+          <p className="text-lg text-gray-600">
             {rentals.length} {rentals.length === 1 ? "rental" : "rentals"}
           </p>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <div className="mb-8 rounded-2xl border border-red-200/50 bg-red-50/50 backdrop-blur-sm p-5 text-red-700 font-medium">
             {error}
           </div>
         )}
 
         {/* Empty State */}
         {rentals.length === 0 ? (
-          <div className="text-center space-y-6 py-12">
-            <div className="text-6xl">🎁</div>
-            <h2 className="text-2xl font-bold text-gray-900">No rentals yet</h2>
-            <p className="text-gray-600 max-w-md mx-auto">
+          <div className="text-center space-y-8 py-20 animate-fade-in-up">
+            <div className="text-6xl animate-float">🎁</div>
+            <h2 className="text-3xl font-bold text-gray-900">No rentals yet</h2>
+            <p className="text-lg text-gray-600 max-w-md mx-auto leading-relaxed">
               Explore the marketplace and rent items that interest you!
             </p>
             <Link
               href="/items"
-              className="inline-block px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+              className="inline-block px-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-xl"
             >
               Browse Marketplace
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {rentals.map((rental) => {
+            {rentals.map((rental, idx) => {
               const statusColor = getStatusColor(rental.status);
               return (
                 <Link key={rental.id} href={`/items/${rental.itemId}`}>
-                  <div className="group h-full rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                    <div className="grid grid-cols-3 gap-4 p-4">
+                  <div
+                    className="group h-full rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-xl transition-all duration-400 transform hover:-translate-y-2 hover:border-gray-300"
+                    style={{
+                      animation: `fadeInUp 0.6s ease-out ${idx * 0.1}s backwards`,
+                    }}
+                  >
+                    <div className="grid grid-cols-3 gap-5 p-5">
                       {/* Left - Image Preview */}
                       <div className="col-span-1">
-                        <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                        <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group-hover:shadow-md transition-all duration-300">
                           {rental.item?.imageUrls?.[0] && (
                             <img
                               src={rental.item.imageUrls[0]}
                               alt={rental.item.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-400"
                             />
                           )}
-                          <div className="absolute top-2 left-2">
+                          <div className="absolute top-3 left-3 z-10">
                             <span
-                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${statusColor.bg} ${statusColor.text}`}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-md transition-all transform group-hover:scale-110 shadow-md ${statusColor.bg} ${statusColor.text}`}
+                              style={{
+                                filter: `drop-shadow(0 0 8px ${
+                                  statusColor.bg.includes('emerald') ? 'rgba(16, 185, 129, 0.3)' :
+                                  statusColor.bg.includes('blue') ? 'rgba(59, 130, 246, 0.3)' :
+                                  statusColor.bg.includes('red') ? 'rgba(239, 68, 68, 0.3)' :
+                                  'rgba(107, 114, 128, 0.3)'
+                                })`,
+                              }}
                             >
                               {statusColor.icon} {rental.status}
                             </span>
@@ -198,24 +211,24 @@ export default function RentalsPage() {
                       {/* Right - Details */}
                       <div className="col-span-2 flex flex-col justify-between space-y-3">
                         <div>
-                          <h3 className="font-semibold text-gray-900 line-clamp-2">
+                          <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-gray-950 transition-colors">
                             {rental.item?.title}
                           </h3>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-gray-600 mt-2 font-medium">
                             {rental.item?.category}
                           </p>
                         </div>
 
-                        <div className="space-y-2 pt-2 border-t border-gray-100">
+                        <div className="space-y-3 pt-2 border-t border-gray-200">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">Duration</span>
-                            <span className="font-medium text-gray-900">
+                            <span className="text-gray-600 font-medium">Duration</span>
+                            <span className="font-bold text-gray-900">
                               {rental.duration} {rental.duration === 1 ? "day" : "days"}
                             </span>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-600">Total paid</span>
-                            <span className="font-bold text-gray-900">
+                            <span className="text-gray-600 font-medium">Total paid</span>
+                            <span className="text-xl font-black text-gray-900">
                               ₹{rental.amount.toLocaleString()}
                             </span>
                           </div>
