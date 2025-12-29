@@ -36,12 +36,15 @@ export default function Navbar() {
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Add Item - Only if logged in */}
             {user && (
-              <Link
-                href="/dashboard/add-item"
-                className="hidden sm:inline-flex items-center text-sm font-semibold bg-gray-900 text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95 shadow-md hover:shadow-lg"
-              >
-                + List Item
-              </Link>
+              <div className="hidden sm:block relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-700 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+                <Link
+                  href="/dashboard/add-item"
+                  className="relative inline-flex items-center text-sm font-bold bg-gray-900 text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition-all duration-200 transform hover:-translate-y-1 active:scale-95 shadow-md hover:shadow-lg"
+                >
+                  + List Item
+                </Link>
+              </div>
             )}
 
             {/* Auth Section */}
