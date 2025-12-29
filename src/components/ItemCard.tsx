@@ -82,32 +82,35 @@ export default function ItemCard({ item }: { item: Item }) {
               : undefined,
           }}
         >
-          {/* Image Container */}
-          <div className="relative aspect-video overflow-hidden bg-gray-900">
+          {/* Image Container - Premium */}
+          <div className="relative aspect-video overflow-hidden bg-gray-950">
             {item.imageUrls?.[index] ? (
               <Image
                 src={item.imageUrls[index]}
                 alt={item.title}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                className="object-cover group-hover:scale-125 transition-transform duration-700 will-change-transform"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 priority={false}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900" />
+              <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950" />
             )}
 
-            {/* Image Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Image Overlay Gradient - More pronounced on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-30 group-hover:opacity-60 transition-opacity duration-400" />
 
-            {/* Badges */}
-            <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+            {/* Vignette edge effect */}
+            <div className="absolute inset-0 rounded-2xl shadow-inner" />
+
+            {/* Badges - Premium styling */}
+            <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-20">
               {/* Availability Badge */}
               <span
-                className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm transition-all ${
+                className={`inline-block px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-lg transition-all transform group-hover:scale-110 ${
                   item.isAvailable
-                    ? "bg-emerald-500/90 text-white shadow-lg"
-                    : "bg-gray-600/80 text-gray-200"
+                    ? "bg-emerald-500/95 text-white shadow-lg shadow-emerald-500/40"
+                    : "bg-gray-700/90 text-gray-200 shadow-lg shadow-gray-700/30"
                 }`}
               >
                 {item.isAvailable ? "✓ Available" : "Unavailable"}
@@ -115,22 +118,22 @@ export default function ItemCard({ item }: { item: Item }) {
 
               {/* Image Counter */}
               {hasMultiple && (
-                <span className="bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                <span className="bg-black/70 backdrop-blur-lg text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                   {index + 1}/{item.imageUrls.length}
                 </span>
               )}
             </div>
 
-            {/* Image Navigation Arrows */}
+            {/* Image Navigation Arrows - Premium */}
             {hasMultiple && (
-              <div className="absolute inset-0 flex items-center justify-between px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button
                   type="button"
                   onClick={(e) => {
                     e.preventDefault();
                     prev();
                   }}
-                  className="flex items-center justify-center h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/40 transition-all duration-200 transform hover:scale-110"
+                  className="flex items-center justify-center h-10 w-10 rounded-full bg-white/25 backdrop-blur-md text-white hover:bg-white/50 hover:shadow-xl transition-all duration-200 transform hover:scale-125 active:scale-95"
                 >
                   ‹
                 </button>
@@ -140,7 +143,7 @@ export default function ItemCard({ item }: { item: Item }) {
                     e.preventDefault();
                     next();
                   }}
-                  className="flex items-center justify-center h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/40 transition-all duration-200 transform hover:scale-110"
+                  className="flex items-center justify-center h-10 w-10 rounded-full bg-white/25 backdrop-blur-md text-white hover:bg-white/50 hover:shadow-xl transition-all duration-200 transform hover:scale-125 active:scale-95"
                 >
                   ›
                 </button>
@@ -148,31 +151,33 @@ export default function ItemCard({ item }: { item: Item }) {
             )}
           </div>
 
-          {/* Content Container */}
-          <div className="p-5 space-y-3 bg-gradient-to-b from-white/80 to-white/60 backdrop-blur-sm">
+          {/* Content Container - Glassmorphic */}
+          <div className="p-5 space-y-3.5 bg-gradient-to-b from-white/85 via-white/70 to-white/60 backdrop-blur-xl">
             {/* Category Badge */}
             <div className="flex items-center justify-between">
-              <span className="inline-block px-2.5 py-1 bg-gray-900/10 text-gray-700 text-xs font-semibold rounded-lg backdrop-blur-sm">
+              <span className="inline-block px-3 py-1.5 bg-gray-950/8 text-gray-700 text-xs font-bold rounded-lg backdrop-blur-sm hover:bg-gray-950/12 transition-colors">
                 {item.category}
               </span>
             </div>
 
-            {/* Title */}
-            <h3 className="text-base font-bold text-gray-900 line-clamp-2 group-hover:text-gray-800 transition-colors duration-200">
+            {/* Title - Premium typography */}
+            <h3 className="text-base font-black text-gray-900 line-clamp-2 group-hover:text-gray-950 transition-colors duration-200 leading-tight">
               {item.title}
             </h3>
 
-            {/* Price - Prominent */}
-            <div className="text-2xl font-bold text-gray-900">
-              ₹{item.pricePerDay}
-              <span className="text-xs font-medium text-gray-600 ml-1">/day</span>
+            {/* Price - Prominent and premium */}
+            <div className="pt-1">
+              <div className="text-3xl font-black text-gray-900 tracking-tight">
+                ₹{item.pricePerDay}
+              </div>
+              <span className="text-xs font-bold text-gray-600 ml-0.5">/day</span>
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-gray-300/50" />
+            {/* Divider - Subtle */}
+            <div className="h-px bg-gradient-to-r from-gray-300/30 via-gray-300/60 to-gray-300/30" />
 
-            {/* Owner */}
-            <div className="flex items-center gap-2 pt-1">
+            {/* Owner - Premium card feel */}
+            <div className="flex items-center gap-3 pt-1.5 hover:bg-white/50 px-2 py-2 rounded-lg transition-colors duration-200">
               <div className="flex-shrink-0">
                 {item.ownerPhoto ? (
                   <Image
@@ -180,14 +185,14 @@ export default function ItemCard({ item }: { item: Item }) {
                     alt={item.ownerName}
                     width={32}
                     height={32}
-                    className="rounded-full object-cover ring-2 ring-white/50"
+                    className="rounded-full object-cover ring-2 ring-white shadow-sm"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 ring-2 ring-white/50" />
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 ring-2 ring-white shadow-sm" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">
+                <p className="text-sm font-bold text-gray-900 truncate">
                   {item.ownerName}
                 </p>
               </div>
