@@ -201,24 +201,50 @@ html {
   display: inline-flex;
   align-items: center;
   padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 12px;
   background: var(--primary);
   color: white;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Glow effects */
+.glow-sm {
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+}
+
+.glow-md {
+  filter: drop-shadow(0 0 16px rgba(59, 130, 246, 0.4));
+}
+
+.glow-lg {
+  filter: drop-shadow(0 0 24px rgba(59, 130, 246, 0.5));
+}
+
+/* 3D perspective utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
 /* Badge styles */
