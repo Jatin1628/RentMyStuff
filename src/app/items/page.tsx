@@ -150,12 +150,19 @@ export default function ItemsPage() {
         </div>
       )}
 
-      {/* Items Grid */}
+      {/* Items Grid - Premium spacing & stagger */}
       {!loading && items.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 stagger-animation">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {items.map((item) => (
-              <ItemCard key={item.id} item={item} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+            {items.map((item, idx) => (
+              <div
+                key={item.id}
+                style={{
+                  animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.08}s backwards`,
+                }}
+              >
+                <ItemCard item={item} />
+              </div>
             ))}
           </div>
         </div>
