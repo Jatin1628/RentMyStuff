@@ -36,18 +36,21 @@ export default function Home() {
               <span className="block text-gray-600 mt-2">A smarter way to consume.</span>
             </p>
 
-            {/* Premium CTA Buttons */}
+            {/* Premium CTA Buttons with glow */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Link
-                href="/items"
-                className="inline-flex items-center px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-2xl"
-              >
-                Browse Items
-                <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-gray-900 to-gray-700 rounded-xl blur opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
+                <Link
+                  href="/items"
+                  className="relative inline-flex items-center px-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-2 active:scale-95 shadow-lg hover:shadow-2xl"
+                >
+                  Browse Items
+                  <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
               <Link
                 href="/login"
-                className="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all duration-300"
+                className="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-xl border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-sm hover:shadow-md"
               >
                 Start Earning
               </Link>
