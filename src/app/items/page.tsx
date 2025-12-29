@@ -43,24 +43,38 @@ export default function ItemsPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Header Section */}
-      <div className="bg-white border-b border-gray-200/50 sticky top-16 z-10 backdrop-blur-sm bg-white/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <div className="animate-fade-in-left">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
-                Browse Marketplace
+    <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+      {/* Premium Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-white to-gray-50 border-b border-gray-200/30">
+        {/* Background glow elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-100/40 to-transparent rounded-full blur-3xl opacity-70" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-slate-100/40 to-transparent rounded-full blur-3xl opacity-60" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
+            <div className="animate-fade-in-left space-y-4">
+              <div className="inline-block">
+                <span className="px-3 py-1.5 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold rounded-full border border-gray-200/50 shadow-sm">
+                  ✨ Discover Premium Rentals
+                </span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
+                Browse<br />
+                <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">Marketplace</span>
               </h1>
-              <p className="mt-2 text-lg text-gray-600">
-                Discover items available for rent in your area
+              <p className="mt-4 text-lg text-gray-600 max-w-xl leading-relaxed">
+                Discover items available for rent in your area. Find exactly what you need, when you need it.
               </p>
             </div>
-            <div className="flex gap-2">
-              <button className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-all duration-200">
+
+            {/* Premium Filter & Sort Buttons */}
+            <div className="flex gap-3 animate-fade-in-down">
+              <button className="px-6 py-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 rounded-xl font-semibold border border-gray-200/50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-sm hover:shadow-md">
                 Filter
               </button>
-              <button className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-all duration-200">
+              <button className="px-6 py-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 rounded-xl font-semibold border border-gray-200/50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-sm hover:shadow-md">
                 Sort
               </button>
             </div>
