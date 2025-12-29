@@ -70,20 +70,25 @@ export default function UploadsPage() {
 
   if (loading || busy) {
     return (
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">My Listings</h1>
-            <p className="mt-2 text-gray-600">Manage your rental items</p>
+          <div className="mb-12 space-y-2">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">My Listings</h1>
+            <p className="text-lg text-gray-600">Manage your rental items</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-xl border border-gray-200 overflow-hidden animate-pulse">
-                <div className="aspect-video bg-gray-200" />
-                <div className="p-4 space-y-3">
-                  <div className="h-3 bg-gray-200 rounded w-2/3" />
-                  <div className="h-4 bg-gray-200 rounded w-full" />
-                  <div className="h-8 bg-gray-200 rounded w-1/2" />
+              <div key={i} className="rounded-2xl border border-gray-200/50 overflow-hidden bg-white animate-pulse shadow-sm">
+                <div className="grid grid-cols-3 gap-4 p-5">
+                  <div className="col-span-1 aspect-square rounded-lg bg-gray-200" />
+                  <div className="col-span-2 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    <div className="pt-2 border-t border-gray-100 space-y-2">
+                      <div className="h-3 bg-gray-200 rounded w-full" />
+                      <div className="h-8 bg-gray-200 rounded w-1/3" />
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -96,73 +101,79 @@ export default function UploadsPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">My Listings</h1>
-            <p className="mt-2 text-gray-600">
+        {/* Header - Premium */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12">
+          <div className="space-y-2">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">My Listings</h1>
+            <p className="text-lg text-gray-600">
               {items.length} {items.length === 1 ? "item" : "items"} listed
             </p>
           </div>
-          <Link
-            href="/dashboard/add-item"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            + Add New Item
-          </Link>
+          <div className="relative group inline-block">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-700 rounded-xl blur opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
+            <Link
+              href="/dashboard/add-item"
+              className="relative inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-md hover:shadow-lg"
+            >
+              + Add New Item
+            </Link>
+          </div>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <div className="mb-8 rounded-2xl border border-red-200/50 bg-red-50/50 backdrop-blur-sm p-5 text-red-700 font-medium">
             {error}
           </div>
         )}
 
         {/* Empty State */}
         {items.length === 0 ? (
-          <div className="text-center space-y-6 py-12">
-            <div className="text-6xl">📦</div>
-            <h2 className="text-2xl font-bold text-gray-900">No listings yet</h2>
-            <p className="text-gray-600 max-w-md mx-auto">
+          <div className="text-center space-y-8 py-20 animate-fade-in-up">
+            <div className="text-6xl animate-float">📦</div>
+            <h2 className="text-3xl font-bold text-gray-900">No listings yet</h2>
+            <p className="text-lg text-gray-600 max-w-md mx-auto leading-relaxed">
               Start earning by listing items you'd like to rent out.
             </p>
             <Link
               href="/dashboard/add-item"
-              className="inline-block px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+              className="inline-block px-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 shadow-lg hover:shadow-xl"
             >
               Create Your First Listing
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {items.map((item) => (
+            {items.map((item, idx) => (
               <div
                 key={item.id}
-                className="group rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+                className="group rounded-2xl border border-gray-200/60 bg-white/70 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-xl transition-all duration-400 transform hover:-translate-y-2 hover:border-gray-300"
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${idx * 0.1}s backwards`,
+                }}
               >
-                <div className="grid grid-cols-3 gap-4 p-4">
+                <div className="grid grid-cols-3 gap-5 p-5">
                   {/* Left - Image Preview */}
                   <div className="col-span-1">
-                    <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                    <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group-hover:shadow-md transition-all duration-300">
                       {item.imageUrls?.[0] && (
                         <img
                           src={item.imageUrls[0]}
                           alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-400"
                         />
                       )}
-                      <div className="absolute top-2 left-2">
+                      <div className="absolute top-3 left-3 z-10">
                         <span
-                          className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
+                          className={`inline-block px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm transition-all transform group-hover:scale-110 ${
                             item.isAvailable
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-gray-200 text-gray-600"
+                              ? "bg-emerald-500/95 text-white shadow-lg shadow-emerald-500/40"
+                              : "bg-gray-600/90 text-gray-100 shadow-lg shadow-gray-600/30"
                           }`}
                         >
-                          {item.isAvailable ? "Active" : "Inactive"}
+                          {item.isAvailable ? "✓ Active" : "○ Inactive"}
                         </span>
                       </div>
                     </div>
@@ -171,33 +182,33 @@ export default function UploadsPage() {
                   {/* Right - Details */}
                   <div className="col-span-2 flex flex-col justify-between space-y-3">
                     <div>
-                      <h3 className="font-semibold text-gray-900 line-clamp-2">
+                      <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-gray-950 transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-gray-600 mt-2 font-medium">
                         {item.category}
                       </p>
                     </div>
 
-                    <div className="space-y-2">
-                      <p className="text-lg font-bold text-gray-900">
+                    <div className="space-y-3 pt-2 border-t border-gray-200">
+                      <p className="text-2xl font-black text-gray-900">
                         ₹{item.pricePerDay}
-                        <span className="text-xs font-normal text-gray-500 ml-1">/day</span>
+                        <span className="text-xs font-bold text-gray-600 ml-1">/day</span>
                       </p>
                       <div className="flex gap-2">
                         <Link
                           href={`/items/${item.id}`}
-                          className="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-center"
+                          className="flex-1 px-3 py-2.5 text-sm font-bold text-gray-700 bg-gray-100/80 hover:bg-gray-200 rounded-lg transition-all duration-200 text-center transform hover:scale-105 active:scale-95"
                         >
                           View
                         </Link>
                         <button
                           onClick={() => toggleAvailability(item.id, item.isAvailable)}
                           disabled={updatingId === item.id}
-                          className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-center disabled:opacity-50 ${
+                          className={`flex-1 px-3 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 text-center transform hover:scale-105 active:scale-95 disabled:opacity-60 ${
                             item.isAvailable
-                              ? "bg-red-100 text-red-700 hover:bg-red-200"
-                              : "bg-green-100 text-green-700 hover:bg-green-200"
+                              ? "bg-red-100/80 text-red-700 hover:bg-red-200"
+                              : "bg-green-100/80 text-green-700 hover:bg-green-200"
                           }`}
                         >
                           {item.isAvailable ? "Deactivate" : "Activate"}
